@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Piece – Puzzle 32 Anniversary</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* Splash */
+#splash {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    font-weight: bold;
+    background: linear-gradient(45deg, black, darkred);
+}
+
+/* Buttons */
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    background: gold;
+}
+
+.hidden { display: none; }
+
+input {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border-radius: 6px;
+    border: none;
+}
+
+/* Wanted Poster Animation */
+.wanted {
+    font-size: 50px;
+    color: gold;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+/* Final Screen */
+#finalScreen {
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: red;
+    top: -10px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="splash">
+🎂 ONE PIECE PUZZLE 32 🎂
+</div>
+
+<div id="menu" class="hidden">
+<h1>🏴‍☠️ Alege Modul de Joc 🏴‍☠️</h1>
+<button onclick="startGame()">Începe Aventură</button>
+</div>
+
+<div id="game" class="hidden">
+<h2 id="question"></h2>
+<input type="text" id="answer" placeholder="Răspuns...">
+<br><br>
+<button onclick="checkAnswer()">Trimite</button>
+</div>
+
+<div id="finalScreen" class="hidden">
+<div class="wanted">🏴‍☠️ WANTED 🏴‍☠️</div>
+🎉 COMOARA A FOST GĂSITĂ! 🎉
+<br><br>
+🔐 Introdu Codul Secret Final:
+<br><br>
+<input type="text" id="secretCode" placeholder="Cod Secret">
+<br><br>
+<button onclick="unlockTreasure()">Deblochează</button>
+</div>
+
+<!-- Muzică (schimbă linkul dacă vrei altă melodie) -->
+<audio id="bgMusic" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="correctSound">
+<source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="wrongSound">
+<source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let current = 0;
+const questions = [
+{ q: "Căpitanul care vrea să devină Regele Piraților", a: "luffy" },
+{ q: "Spadasinul cu trei săbii", a: "zoro" },
+{ q: "Navigatoarea care iubește banii", a: "nami" },
+{ q: "Bucătarul care luptă doar cu picioarele", a: "sanji" }
+];
+
+const SECRET_FINAL_CODE = "32onepiece";
+
+setTimeout(() => {
+document.getElementById("splash").classList.add("hidden");
+document.getElementById("menu").classList.remove("hidden");
+}, 3000);
+
+function startGame(){
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+document.getElementById("bgMusic").play();
+loadQuestion();
+}
+
+function loadQuestion(){
+if(current >= questions.length){
+showFinal();
+return;
+}
+document.getElementById("question").textContent = questions[current].q;
+document.getElementById("answer").value = "";
+}
+
+function checkAnswer(){
+let user = document.getElementById("answer").value.trim().toLowerCase();
+if(user === questions[current].a){
+document.getElementById("correctSound").play();
+current++;
+loadQuestion();
+}else{
+document.getElementById("wrongSound").play();
+alert("Greșit! Încearcă din nou.");
+}
+}
+
+function showFinal(){
+document.getElementById("game").classList.add("hidden");
+document.getElementById("finalScreen").classList.remove("hidden");
+startConfetti();
+}
+
+function unlockTreasure(){
+let code = document.getElementById("secretCode").value.trim().toLowerCase();
+if(code === SECRET_FINAL_CODE){
+alert("🎉 FELICITĂRI! Ești Regele Piraților la 32 de ani! 🏆");
+}else{
+alert("Cod greșit! Mai încearcă.");
+}
+}
+
+function startConfetti(){
+for(let i=0;i<150;i++){
+let conf = document.createElement("div");
+conf.className="confetti";
+conf.style.left=Math.random()*100+"vw";
+conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
+conf.style.animationDuration=(Math.random()*3+2)+"s";
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),5000);
+}
+}
+</script>
+<script>
+    let current = 0;
+    const questions = [
+    { q: "Căpitanul care vrea să devină Regele Piraților", a: "luffy" },
+    { q: "Spadasinul cu trei săbii", a: "zoro" },
+    { q: "Navigatoarea care iubește banii", a: "nami" },
+    { q: "Bucătarul care luptă doar cu picioarele", a: "sanji" }
+    ];
+    
+    const SECRET_FINAL_CODE = "luffy";
+    
+    setTimeout(() => {
+    document.getElementById("splash").classList.add("hidden");
+    document.getElementById("menu").classList.remove("hidden");
+    }, 3000);
+    
+    function startGame(){
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("game").classList.remove("hidden");
+    document.getElementById("bgMusic").play();
+    loadQuestion();
+    }
+    
+    function loadQuestion(){
+    if(current >= questions.length){
+    showFinal();
+    return;
+    }
+    document.getElementById("question").textContent = questions[current].q;
+    document.getElementById("answer").value = "";
+    }
+    
+    function checkAnswer(){
+    let user = document.getElementById("answer").value.trim().toLowerCase();
+    if(user === questions[current].a){
+    document.getElementById("correctSound").play();
+    current++;
+    loadQuestion();
+    }else{
+    document.getElementById("wrongSound").play();
+    alert("Greșit! Încearcă din nou.");
+    }
+    }
+    
+    function showFinal(){
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("finalScreen").classList.remove("hidden");
+    startConfetti();
+    }
+    
+    function unlockTreasure(){
+    let code = document.getElementById("secretCode").value.trim().toLowerCase();
+    
+    if(code === SECRET_FINAL_CODE){
+    document.getElementById("finalScreen").innerHTML = `
+    <pre style="color: gold; font-size:14px; line-height:14px;">
+            +++++++++++++++
+         ++++++++*******+++++++
+       ++++++****************++++++
+      +++++********************+++++
+     +++++***********,,***********++++
+    ++++**********,,,,,,**********++++
+    ++++**********,,****,,*********++++
+    ++++**********,,****,,*********++++
+    ++++**********,,****,,*********++++
+    ++++***********,,,,,,,,********++++
+     +++++***********,,,,***********++++
+      +++++************,,,,************++++
+       +++++********************++++++
+         ++++++++************++++++
+            ++++++++******++++++
+               ++++++****+++++
+                  ++++++++++
+    
+    🏴‍☠️ MONKEY D. LUFFY 🏴‍☠️
+    👑 REGELE PIRATILOR 👑
+    🎂 32 ANI DE AVENTURĂ 🎂
+    </pre>
+    `;
+    }else{
+    alert("Cod greșit! Gândește-te cine este cel mai puternic! 💀");
+    }
+    }
+    
+    function startConfetti(){
+    for(let i=0;i<150;i++){
+    let conf = document.createElement("div");
+    conf.className="confetti";
+    conf.style.left=Math.random()*100+"vw";
+    conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    conf.style.animationDuration=(Math.random()*3+2)+"s";
+    document.body.appendChild(conf);
+    setTimeout(()=>conf.remove(),5000);
+    }
+    }
+    </script>
+    
+</body>
+</html>
